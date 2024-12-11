@@ -1,0 +1,126 @@
+networks:
+  grabgoods:
+    driver: "bridge"
+
+services:
+  users:
+    image: "devkunsas/users:v1"
+    container_name: userservice-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    networks:
+      - grabgoods
+  categories:
+    image: "devkunsas/categories:v1"
+    container_name: categoryservice-ms
+    ports:
+      - "8081:8081"
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    networks:
+      - grabgoods
+  products:
+    image: "devkunsas/products:v1"
+    container_name: productservice-ms
+    ports:
+      - "8082:8082"
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    networks:
+      - grabgoods
+  inventory:
+    image: "devkunsas/inventory:v1"
+    container_name: inventoryservice-ms
+    ports:
+      - "8083:8083"
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    networks:
+      - grabgoods
+  reviews:
+    image: "devkunsas/reviews:v1"
+    container_name: reviewservice-ms
+    ports:
+      - "8084:8084"
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    networks:
+      - grabgoods
+  cart:
+    image: "devkunsas/cart:v1"
+    container_name: cartservice-ms
+    ports:
+      - "8085:8085"
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    networks:
+      - grabgoods
+  wishlists:
+    image: "devkunsas/wishlists:v1"
+    container_name: wishlistservice-ms
+    ports:
+      - "8086:8086"
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    networks:
+      - grabgoods
+  orders:
+    image: "devkunsas/orders:v1"
+    container_name: orderservice-ms
+    ports:
+      - "8087:8087"
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    networks:
+      - grabgoods
+  payments:
+    image: "devkunsas/payments:v1"
+    container_name: paymentservice-ms
+    ports:
+      - "8088:8088"
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    networks:
+      - grabgoods
+  support:
+    image: "devkunsas/support:v1"
+    container_name: supportservice-ms
+    ports:
+      - "8089:8089"
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    networks:
+      - grabgoods
+  campaigns:
+    image: "devkunsas/campaigns:v1"
+    container_name: campaignservice-ms
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 800m
+    networks:
+      - grabgoods
