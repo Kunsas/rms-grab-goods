@@ -8,20 +8,24 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.28/lombok-1.18.28.jar" />
         </processorPath>
-        <module name="supportservice" />
         <module name="wishlistservice" />
+        <module name="supportservice" />
         <module name="reviewservice" />
-        <module name="userservice" />
-        <module name="categoryservice" />
         <module name="productservice" />
+        <module name="categoryservice" />
         <module name="inventoryservice" />
         <module name="paymentservice" />
-        <module name="campaignservice" />
-        <module name="cartservice" />
         <module name="orderservice" />
+        <module name="cartservice" />
+        <module name="campaignservice" />
+      </profile>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="userservice" />
       </profile>
     </annotationProcessing>
   </component>

@@ -1,4 +1,4 @@
-package com.kunsas.grabgoods.userservice.enums;
+package com.kunsas.grabgoods.userservice.enumeration;
 
 public enum UserRole {
     CUSTOMER,
