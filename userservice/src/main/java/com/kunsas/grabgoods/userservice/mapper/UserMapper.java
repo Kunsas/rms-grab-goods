@@ -1,42 +1,43 @@
 package com.kunsas.grabgoods.userservice.mapper;
 
-import com.kunsas.grabgoods.userservice.dto.NewUserDto;
-import com.kunsas.grabgoods.userservice.dto.UserDto;
+import com.kunsas.grabgoods.userservice.dto.UserRequestDto;
+import com.kunsas.grabgoods.userservice.dto.UserResponseDto;
 import com.kunsas.grabgoods.userservice.entity.User;
+import com.kunsas.grabgoods.userservice.enumeration.UserRole;
 
 public class UserMapper {
 
-    public static UserDto mapToUserDto(User user, UserDto userDto){
-        userDto.setId(String.valueOf(user.getId()));
-        userDto.setName(user.getName());
-        userDto.setEmail(user.getEmail());
-        userDto.setRole(user.getRole());
-        userDto.setMobileNumber(user.getMobileNumber());
-        userDto.setImageUrl(user.getImageUrl());
-        userDto.setAddress(user.getAddress());
+    public static UserResponseDto mapToUserDto(User user, UserResponseDto userResponseDto){
+        userResponseDto.setId(String.valueOf(user.getId()));
+        userResponseDto.setName(user.getName());
+        userResponseDto.setEmail(user.getEmail());
+        userResponseDto.setRole(user.getRole().toValue());
+        userResponseDto.setMobileNumber(user.getMobileNumber());
+        userResponseDto.setImageUrl(user.getImageUrl());
+        userResponseDto.setAddress(user.getAddress());
 
-        return userDto;
+        return userResponseDto;
     }
 
-    public static User mapToUser(UserDto userDto, User user){
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-        user.setRole(userDto.getRole());
-        user.setMobileNumber(userDto.getMobileNumber());
-        user.setImageUrl(userDto.getImageUrl());
-        user.setAddress(userDto.getAddress());
+    public static User mapToUser(UserRequestDto userRequestDto, User user){
+        user.setName(userRequestDto.getName());
+        user.setEmail(userRequestDto.getEmail());
+        user.setRole(UserRole.fromValue(userRequestDto.getRole()));
+        user.setMobileNumber(userRequestDto.getMobileNumber());
+        user.setImageUrl(userRequestDto.getImageUrl());
+        user.setAddress(userRequestDto.getAddress());
 
         return user;
     }
 
-    public static User mapToNewUser(NewUserDto newUserDto, User user){
-        user.setName(newUserDto.getName());
-        user.setEmail(newUserDto.getEmail());
-        user.setPassword(newUserDto.getPassword());
-        user.setRole(newUserDto.getRole());
-        user.setMobileNumber(newUserDto.getMobileNumber());
-        user.setImageUrl(newUserDto.getImageUrl());
-        user.setAddress(newUserDto.getAddress());
+    public static User mapToNewUser(UserRequestDto userRequestDto, User user){
+        user.setName(userRequestDto.getName());
+        user.setEmail(userRequestDto.getEmail());
+        user.setPassword(userRequestDto.getPassword());
+        user.setRole(UserRole.fromValue(userRequestDto.getRole()));
+        user.setMobileNumber(userRequestDto.getMobileNumber());
+        user.setImageUrl(userRequestDto.getImageUrl());
+        user.setAddress(userRequestDto.getAddress());
 
         return user;
     }
