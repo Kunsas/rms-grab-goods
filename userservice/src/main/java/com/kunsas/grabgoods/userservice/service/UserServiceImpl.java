@@ -1,8 +1,8 @@
 package com.kunsas.grabgoods.userservice.service;
 
 import com.kunsas.grabgoods.userservice.constant.UserConstants;
-import com.kunsas.grabgoods.userservice.dto.NewUserDto;
-import com.kunsas.grabgoods.userservice.dto.UserDto;
+import com.kunsas.grabgoods.userservice.dto.UserRequestDto;
+import com.kunsas.grabgoods.userservice.dto.UserResponseDto;
 import com.kunsas.grabgoods.userservice.entity.User;
 import com.kunsas.grabgoods.userservice.exception.UserAlreadyExistsException;
 import com.kunsas.grabgoods.userservice.exception.UserNotFoundException;
@@ -21,34 +21,34 @@ public class UserServiceImpl implements IUserService{
     private UserRepository userRepository;
 
     @Override
-    public void createUser(NewUserDto newUserDto) {
-        Optional<User> existingUser = userRepository.findByEmail(newUserDto.getEmail());
+    public void createUser(UserRequestDto userRequestDto) {
+        Optional<User> existingUser = userRepository.findByEmail(userRequestDto.getEmail());
         if(existingUser.isPresent()){
           throw new UserAlreadyExistsException(UserConstants.USER_ALREADY_EXISTS_EXCEPTION_MESSAGE);
         } else {
-            User newUser = UserMapper.mapToNewUser(newUserDto, new User());
+            User newUser = UserMapper.mapToNewUser(userRequestDto, new User());
             userRepository.save(newUser);
         }
     }
 
     @Override
-    public UserDto getUserById(String id) {
+    public UserResponseDto getUserById(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(UserConstants.USER_NOT_FOUND_EXCEPTION_MESSAGE));
-        return UserMapper.mapToUserDto(user, new UserDto());
+        return UserMapper.mapToUserDto(user, new UserResponseDto());
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
+    public List<UserResponseDto> getAllUsers() {
         return userRepository.findAll().stream().map(
-                user -> UserMapper.mapToUserDto(user, new UserDto())
+                user -> UserMapper.mapToUserDto(user, new UserResponseDto())
         ).toList();
     }
 
     @Override
-    public boolean updateUser(String id, UserDto userDto) {
+    public boolean updateUser(String id, UserRequestDto userRequestDto) {
         User user = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(UserConstants.USER_NOT_FOUND_EXCEPTION_MESSAGE));
-        UserMapper.mapToUserDto(user, userDto);
-        userRepository.save(user);
+        User updateUser = UserMapper.mapToUser(userRequestDto, user);
+        userRepository.save(updateUser);
         return true;
     }
 

@@ -3,29 +3,39 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Annotation profile for userservice" enabled="true">
+      <profile name="Annotation profile for cartservice" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.28/lombok-1.18.28.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="wishlistservice" />
-        <module name="supportservice" />
-        <module name="reviewservice" />
-        <module name="productservice" />
-        <module name="categoryservice" />
-        <module name="inventoryservice" />
-        <module name="paymentservice" />
-        <module name="orderservice" />
         <module name="cartservice" />
-        <module name="campaignservice" />
       </profile>
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="userservice" />
+        <module name="configserver" />
+        <module name="categoryservice" />
+      </profile>
+      <profile name="Annotation profile for wishlistservice" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+        </processorPath>
+        <module name="wishlistservice" />
+        <module name="supportservice" />
+        <module name="reviewservice" />
+        <module name="productservice" />
+        <module name="inventoryservice" />
+        <module name="paymentservice" />
+        <module name="orderservice" />
+        <module name="campaignservice" />
       </profile>
     </annotationProcessing>
   </component>
@@ -34,6 +44,7 @@
       <module name="campaignservice" options="-parameters" />
       <module name="cartservice" options="-parameters" />
       <module name="categoryservice" options="-parameters" />
+      <module name="configserver" options="-parameters" />
       <module name="inventoryservice" options="-parameters" />
       <module name="orderservice" options="-parameters" />
       <module name="paymentservice" options="-parameters" />

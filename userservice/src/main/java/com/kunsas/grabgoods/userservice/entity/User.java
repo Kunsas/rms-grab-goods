@@ -3,6 +3,7 @@ package com.kunsas.grabgoods.userservice.entity;
 import com.kunsas.grabgoods.userservice.enumeration.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -17,20 +18,21 @@ import java.util.UUID;
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(updatable = false, nullable = false, columnDefinition = "CHAR(36)")
+    private String id;
 
     private String name;
     private String email;
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private UserRole role;
+
     private String mobileNumber;
     private String imageUrl;
     private String address;
-    private LocalDateTime createdAt;
-    private String createdBy;
-    private LocalDateTime updatedAt;
-    private String updatedBy;
 
 }
 
