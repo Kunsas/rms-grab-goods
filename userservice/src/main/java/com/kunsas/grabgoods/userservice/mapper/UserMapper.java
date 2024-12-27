@@ -7,7 +7,8 @@ import com.kunsas.grabgoods.userservice.enumeration.UserRole;
 
 public class UserMapper {
 
-    public static UserResponseDto mapToUserDto(User user, UserResponseDto userResponseDto){
+    public static UserResponseDto mapToUserResponseDto(User user){
+        UserResponseDto userResponseDto = new UserResponseDto();
         userResponseDto.setId(String.valueOf(user.getId()));
         userResponseDto.setName(user.getName());
         userResponseDto.setEmail(user.getEmail());
@@ -30,7 +31,8 @@ public class UserMapper {
         return user;
     }
 
-    public static User mapToNewUser(UserRequestDto userRequestDto, User user){
+    public static User mapToNewUser(UserRequestDto userRequestDto){
+        User user = new User();
         user.setName(userRequestDto.getName());
         user.setEmail(userRequestDto.getEmail());
         user.setPassword(userRequestDto.getPassword());

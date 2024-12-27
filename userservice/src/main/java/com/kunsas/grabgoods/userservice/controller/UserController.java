@@ -37,19 +37,19 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> getUserById(@Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$", message = UserConstants.INVALID_USER_ID_MESSAGE) @PathVariable String id){
+    public ResponseEntity<UserResponseDto> getUserById(@Pattern(regexp = UserConstants.USER_ID_REGEX, message = UserConstants.INVALID_USER_ID_MESSAGE) @PathVariable String id){
         UserResponseDto userResponseDto = userService.getUserById(id);
         return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<UserResponseDto>> getAllUsers(){
         List<UserResponseDto> userResponseDtoList = userService.getAllUsers();
         return ResponseEntity.status(HttpStatus.OK).body(userResponseDtoList);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDto> updateUser(@Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$", message = UserConstants.INVALID_USER_ID_MESSAGE) @PathVariable String id, @Valid @RequestBody UserRequestDto userRequestDto){
+    public ResponseEntity<ResponseDto> updateUser(@Pattern(regexp = UserConstants.USER_ID_REGEX, message = UserConstants.INVALID_USER_ID_MESSAGE) @PathVariable String id, @Valid @RequestBody UserRequestDto userRequestDto){
         boolean isUpdated = userService.updateUser(id, userRequestDto);
         if(isUpdated){
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(UserConstants.STATUS_200, UserConstants.MESSAGE_200));
@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDto> deleteUser(@Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$", message = UserConstants.INVALID_USER_ID_MESSAGE) @PathVariable String id){
+    public ResponseEntity<ResponseDto> deleteUser(@Pattern(regexp = UserConstants.USER_ID_REGEX, message = UserConstants.INVALID_USER_ID_MESSAGE) @PathVariable String id){
         boolean isDeleted = userService.deleteUser(id);
         if(isDeleted){
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(UserConstants.STATUS_200, UserConstants.MESSAGE_200));

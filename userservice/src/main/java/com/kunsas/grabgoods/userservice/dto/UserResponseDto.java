@@ -11,7 +11,7 @@ import lombok.Data;
 public class UserResponseDto {
 
     @NotEmpty(message = "User ID" + UserConstants.NOT_EMPTY_MESSAGE)
-    @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$", message = UserConstants.INVALID_USER_ID_MESSAGE)
+    @Pattern(regexp = UserConstants.USER_ID_REGEX, message = UserConstants.INVALID_USER_ID_MESSAGE)
     private String id;
 
     @NotEmpty(message = "Name" + UserConstants.NOT_EMPTY_MESSAGE)
@@ -19,14 +19,14 @@ public class UserResponseDto {
     private String name;
 
     @NotEmpty(message = "Email" + UserConstants.NOT_EMPTY_MESSAGE)
-    @Email(regexp = "^(?!.*\\.\\.)[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\\.[a-zA-Z]{2,}$", message = UserConstants.INVALID_EMAIL_MESSAGE)
+    @Email(regexp = UserConstants.USER_EMAIL_ID_REGEX, message = UserConstants.INVALID_EMAIL_MESSAGE)
     private String email;
 
     @NotEmpty(message = "Role" + UserConstants.NOT_EMPTY_MESSAGE)
     private String role;
 
     @NotEmpty(message = "Mobile number" + UserConstants.NOT_EMPTY_MESSAGE)
-    @Pattern(regexp = "(^$|[0-9]{10})", message = UserConstants.INVALID_MOBILE_NUMBER_MESSAGE)
+    @Pattern(regexp = UserConstants.USER_MOBILE_NUMBER_REGEX, message = UserConstants.INVALID_MOBILE_NUMBER_MESSAGE)
     private String mobileNumber;
 
     @NotEmpty(message = "Image" + UserConstants.NOT_EMPTY_MESSAGE)

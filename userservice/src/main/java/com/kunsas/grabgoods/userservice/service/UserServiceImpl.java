@@ -26,7 +26,7 @@ public class UserServiceImpl implements IUserService{
         if(existingUser.isPresent()){
           throw new UserAlreadyExistsException(UserConstants.USER_ALREADY_EXISTS_EXCEPTION_MESSAGE);
         } else {
-            User newUser = UserMapper.mapToNewUser(userRequestDto, new User());
+            User newUser = UserMapper.mapToNewUser(userRequestDto);
             userRepository.save(newUser);
         }
     }
@@ -34,21 +34,21 @@ public class UserServiceImpl implements IUserService{
     @Override
     public UserResponseDto getUserById(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(UserConstants.USER_NOT_FOUND_EXCEPTION_MESSAGE));
-        return UserMapper.mapToUserDto(user, new UserResponseDto());
+        return UserMapper.mapToUserResponseDto(user);
     }
 
     @Override
     public List<UserResponseDto> getAllUsers() {
         return userRepository.findAll().stream().map(
-                user -> UserMapper.mapToUserDto(user, new UserResponseDto())
+                UserMapper::mapToUserResponseDto
         ).toList();
     }
 
     @Override
     public boolean updateUser(String id, UserRequestDto userRequestDto) {
-        User user = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(UserConstants.USER_NOT_FOUND_EXCEPTION_MESSAGE));
-        User updateUser = UserMapper.mapToUser(userRequestDto, user);
-        userRepository.save(updateUser);
+        User existingUser = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(UserConstants.USER_NOT_FOUND_EXCEPTION_MESSAGE));
+        User updatedUser = UserMapper.mapToUser(userRequestDto, existingUser);
+        userRepository.save(updatedUser);
         return true;
     }
 
