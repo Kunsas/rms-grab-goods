@@ -1,15 +1,15 @@
 package com.kunsas.grabgoods.userservice.service;
 
-import com.kunsas.grabgoods.userservice.dto.NewUserDto;
-import com.kunsas.grabgoods.userservice.dto.UserDto;
+import com.kunsas.grabgoods.userservice.dto.UserRequestDto;
+import com.kunsas.grabgoods.userservice.dto.UserResponseDto;
 
 import java.util.List;
 
 public interface IUserService {
-    void createUser(NewUserDto newUserDto);
-    UserDto getUserById(String id);
-    List<UserDto> getAllUsers();
-    boolean updateUser(String id, UserDto userDto);
+    void createUser(UserRequestDto userRequestDto);
+    UserResponseDto getUserById(String id);
+    List<UserResponseDto> getAllUsers();
+    boolean updateUser(String id, UserRequestDto userRequestDto);
     boolean deleteUser(String id);
     boolean changePassword(String id, String oldPassword, String newPassword);
 

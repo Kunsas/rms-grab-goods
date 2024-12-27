@@ -1,0 +1,19 @@
+server:
+  port:
+    8081
+
+spring:
+  application:
+    name: "categoryservice"
+  data:
+    mongodb:
+      uri: "mongodb://admin:mongodb@localhost:27022/categories"
+      database: "categories"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -14,7 +14,13 @@ public class UserConstants {
     public static final String USER_NOT_FOUND_EXCEPTION_MESSAGE = "User does not exists.";
     public static final String USER_ALREADY_EXISTS_EXCEPTION_MESSAGE = "User with given email is already registered.";
 
+    public static final String USER_ID_REGEX = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$";
+    public static final String USER_EMAIL_ID_REGEX = "^(?!.*\\.\\.)[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\\.[a-zA-Z]{2,}$";
+    public static final String USER_MOBILE_NUMBER_REGEX = "(^$|[0-9]{10})";
+    public static final String USER_PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}";
+
     public static final String NOT_EMPTY_MESSAGE = " cannot be empty.";
+    public static final String NOT_NULL_MESSAGE = " cannot be null.";
     public static final String INVALID_EMAIL_MESSAGE = "Please enter a valid email.";
     public static final String INVALID_PASSWORD_MESSAGE = "Password must be at least 8 characters long, include at least - one uppercase letter, one lowercase letter, one number, and one special character (e.g., @$!%*?&).";
     public static final String INVALID_USERNAME_MESSAGE = "Username must have length of min 8 and max 32 characters.";

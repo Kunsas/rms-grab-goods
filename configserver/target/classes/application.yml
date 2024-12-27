@@ -1,0 +1,18 @@
+server:
+  port: 8071
+
+spring:
+  application:
+  name: "configserver"
+  profiles:
+    active: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Kunsas/rms-grab-goods-configuration-pb.git
+          default-label: main
+          timeout: 8
+          clone-on-start: true
+          clone-depth: 1
+          force-pull: true
