@@ -1,10 +1,7 @@
 package com.kunsas.grabgoods.categoryservice.controller;
 
 import com.kunsas.grabgoods.categoryservice.constant.CategoryConstants;
-import com.kunsas.grabgoods.categoryservice.dto.CategoryConfigInfoDto;
-import com.kunsas.grabgoods.categoryservice.dto.CategoryRequestDto;
-import com.kunsas.grabgoods.categoryservice.dto.CategoryResponseDto;
-import com.kunsas.grabgoods.categoryservice.dto.ResponseDto;
+import com.kunsas.grabgoods.categoryservice.dto.*;
 import com.kunsas.grabgoods.categoryservice.mapper.CategoryMapper;
 import com.kunsas.grabgoods.categoryservice.service.ICategoryService;
 import jakarta.validation.Valid;
@@ -39,6 +36,12 @@ public class CategoryController {
     public ResponseEntity<CategoryResponseDto> getCategoryById(@Pattern(regexp = CategoryConstants.CATEGORY_ID_REGEX, message = CategoryConstants.INVALID_CATEGORY_ID_MESSAGE) @PathVariable String id){
         CategoryResponseDto categoryResponseDto = categoryService.getCategoryById(id);
         return ResponseEntity.status(HttpStatus.OK).body(categoryResponseDto);
+    }
+
+    @PostMapping("/lookup")
+    public ResponseEntity<List<CategoryResponseDto>> getCategoriesByNames(@Valid @RequestBody CategoryLookupRequestDto categoryLookupRequestDto){
+        List<CategoryResponseDto> categoryResponseDtoList = categoryService.getCategoriesByName(categoryLookupRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(categoryResponseDtoList);
     }
     
     @GetMapping

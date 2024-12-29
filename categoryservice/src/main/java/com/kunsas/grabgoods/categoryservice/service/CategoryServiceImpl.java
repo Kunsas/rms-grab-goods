@@ -1,6 +1,7 @@
 package com.kunsas.grabgoods.categoryservice.service;
 
 import com.kunsas.grabgoods.categoryservice.constant.CategoryConstants;
+import com.kunsas.grabgoods.categoryservice.dto.CategoryLookupRequestDto;
 import com.kunsas.grabgoods.categoryservice.dto.CategoryRequestDto;
 import com.kunsas.grabgoods.categoryservice.dto.CategoryResponseDto;
 import com.kunsas.grabgoods.categoryservice.entity.Category;
@@ -8,8 +9,10 @@ import com.kunsas.grabgoods.categoryservice.exception.CategoryAlreadyExistsExcep
 import com.kunsas.grabgoods.categoryservice.exception.CategoryNotFoundException;
 import com.kunsas.grabgoods.categoryservice.mapper.CategoryMapper;
 import com.kunsas.grabgoods.categoryservice.repository.CategoryRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +38,12 @@ public class CategoryServiceImpl implements ICategoryService{
     public CategoryResponseDto getCategoryById(String id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(CategoryConstants.CATEGORY_NOT_FOUND_EXCEPTION_MESSAGE));
         return CategoryMapper.mapToCategoryResponseDto(category);
+    }
+
+    @Override
+    public List<CategoryResponseDto> getCategoriesByName(CategoryLookupRequestDto categoryLookupRequestDto) {
+        List<Category> categories = categoryRepository.findByNameIn(categoryLookupRequestDto.getNames()).orElseThrow(() -> new CategoryNotFoundException(CategoryConstants.CATEGORY_NOT_FOUND_EXCEPTION_MESSAGE));
+        return categories.stream().map(CategoryMapper::mapToCategoryResponseDto).toList();
     }
 
     @Override

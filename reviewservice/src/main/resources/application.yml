@@ -1,0 +1,24 @@
+server:
+  port:
+    8084
+
+spring:
+  application:
+    name: "reviewservice"
+  data:
+    mongodb:
+      uri: "mongodb://admin:mongodb@localhost:27020/reviews"
+      database: "reviews"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
