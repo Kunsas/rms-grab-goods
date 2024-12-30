@@ -9,10 +9,9 @@ import com.kunsas.grabgoods.categoryservice.exception.CategoryAlreadyExistsExcep
 import com.kunsas.grabgoods.categoryservice.exception.CategoryNotFoundException;
 import com.kunsas.grabgoods.categoryservice.mapper.CategoryMapper;
 import com.kunsas.grabgoods.categoryservice.repository.CategoryRepository;
-import jakarta.validation.Valid;
+import com.kunsas.grabgoods.categoryservice.service.client.IProductFeignClient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +21,8 @@ import java.util.Optional;
 public class CategoryServiceImpl implements ICategoryService{
 
     private CategoryRepository categoryRepository;
+
+    private IProductFeignClient productFeignClient;
 
     @Override
     public void createCategory(CategoryRequestDto categoryRequestDto) {
@@ -52,17 +53,19 @@ public class CategoryServiceImpl implements ICategoryService{
     }
 
     @Override
-    public boolean updateCategory(String id, CategoryRequestDto categoryRequestDto) {
+    public CategoryResponseDto updateCategory(String id, CategoryRequestDto categoryRequestDto) {
         Category existingCategory = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(CategoryConstants.CATEGORY_NOT_FOUND_EXCEPTION_MESSAGE));
-        Category updatedCategory = CategoryMapper.mapToCategory(categoryRequestDto, existingCategory);
-        categoryRepository.save(updatedCategory);
-        return true;
+        Category categoryToUpdate = CategoryMapper.mapToCategory(categoryRequestDto, existingCategory);
+        Category updatedCategory = categoryRepository.save(categoryToUpdate);
+        productFeignClient.updateCategoryInProduct(id, categoryRequestDto);
+        return CategoryMapper.mapToCategoryResponseDto(updatedCategory);
     }
 
     @Override
-    public boolean deleteCategory(String id) {
+    public String deleteCategory(String id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(CategoryConstants.CATEGORY_NOT_FOUND_EXCEPTION_MESSAGE));
         categoryRepository.deleteById(category.getId());
-        return true;
+        productFeignClient.deleteCategoryInProduct(id);
+        return category.getId();
     }
 }

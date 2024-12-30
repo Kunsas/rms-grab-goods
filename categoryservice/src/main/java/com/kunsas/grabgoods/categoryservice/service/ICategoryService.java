@@ -11,6 +11,6 @@ public interface ICategoryService {
     CategoryResponseDto getCategoryById(String id);
     List<CategoryResponseDto> getCategoriesByName(CategoryLookupRequestDto names);
     List<CategoryResponseDto> getAllCategories();
-    boolean updateCategory(String id, CategoryRequestDto categoryRequestDto);
-    boolean deleteCategory(String id);
+    CategoryResponseDto updateCategory(String id, CategoryRequestDto categoryRequestDto);
+    String deleteCategory(String id);
 }

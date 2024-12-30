@@ -5,6 +5,7 @@ import com.kunsas.grabgoods.productservice.dto.ProductConfigInfoDto;
 import com.kunsas.grabgoods.productservice.dto.ProductRequestDto;
 import com.kunsas.grabgoods.productservice.dto.ProductResponseDto;
 import com.kunsas.grabgoods.productservice.dto.ResponseDto;
+import com.kunsas.grabgoods.productservice.dto.client.CategoryRequestDto;
 import com.kunsas.grabgoods.productservice.service.IProductService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -69,6 +70,26 @@ public class ProductController {
     @GetMapping("/config-info")
     public ResponseEntity<ProductConfigInfoDto> getConfigInfo(){
         return ResponseEntity.status(HttpStatus.OK).body(productConfigInfoDto);
+    }
+
+    @PutMapping("category/{id}")
+    public ResponseEntity<ResponseDto> updateCategoryInProduct(@PathVariable String id, @RequestBody CategoryRequestDto categoryRequestDto){
+        boolean isUpdated = productService.updateCategoryInProduct(id, categoryRequestDto);
+        if(isUpdated){
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(ProductConstants.STATUS_200, ProductConstants.MESSAGE_200));
+        } else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto(ProductConstants.STATUS_500, ProductConstants.MESSAGE_500));
+        }
+    }
+
+    @DeleteMapping("category/{id}")
+    public ResponseEntity<ResponseDto> deleteCategoryInProduct(@PathVariable String id){
+        boolean isDeleted = productService.deleteCategoryInProduct(id);
+        if(isDeleted){
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(ProductConstants.STATUS_200, ProductConstants.MESSAGE_200));
+        } else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto(ProductConstants.STATUS_500, ProductConstants.MESSAGE_500));
+        }
     }
 
 }

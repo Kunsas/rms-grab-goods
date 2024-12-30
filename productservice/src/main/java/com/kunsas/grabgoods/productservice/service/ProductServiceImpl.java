@@ -3,7 +3,9 @@ package com.kunsas.grabgoods.productservice.service;
 import com.kunsas.grabgoods.productservice.constant.ProductConstants;
 import com.kunsas.grabgoods.productservice.dto.ProductRequestDto;
 import com.kunsas.grabgoods.productservice.dto.ProductResponseDto;
+import com.kunsas.grabgoods.productservice.dto.ResponseDto;
 import com.kunsas.grabgoods.productservice.dto.client.CategoryLookupRequestDto;
+import com.kunsas.grabgoods.productservice.dto.client.CategoryRequestDto;
 import com.kunsas.grabgoods.productservice.dto.client.CategoryResponseDto;
 import com.kunsas.grabgoods.productservice.entity.Product;
 import com.kunsas.grabgoods.productservice.exception.ProductAlreadyExistsException;
@@ -12,6 +14,11 @@ import com.kunsas.grabgoods.productservice.mapper.ProductMapper;
 import com.kunsas.grabgoods.productservice.repository.ProductRepository;
 import com.kunsas.grabgoods.productservice.service.client.ICategoryFeignClient;
 import lombok.AllArgsConstructor;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +33,9 @@ public class ProductServiceImpl implements IProductService {
     private ProductRepository productRepository;
 
     private ICategoryFeignClient categoryFeignClient;
+
+    private MongoTemplate mongoTemplate;
+
 
     @Override
     public void createProduct(ProductRequestDto productRequestDto) {
@@ -83,4 +93,28 @@ public class ProductServiceImpl implements IProductService {
         productRepository.deleteById(product.getId());
         return true;
     }
+
+    @Override
+    public boolean updateCategoryInProduct(String id, CategoryRequestDto categoryRequestDto) {
+        Query query = new Query(Criteria.where("categories._id").is(id));
+        List<Product> products = mongoTemplate.find(query, Product.class);
+        for (Product product : products) {
+            product.getCategories().forEach(category -> {
+                if (category.getId().equals(id)) {
+                    category.setName(categoryRequestDto.getName());
+                }
+            });
+            mongoTemplate.save(product);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteCategoryInProduct(String id) {
+        Query query = new Query(Criteria.where("categories._id").is(id));
+        Update update = new Update().pull("categories", new Query(Criteria.where("_id").is(id)));
+        mongoTemplate.updateMulti(query, update, Product.class);
+        return true;
+    }
+
 }

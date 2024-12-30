@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient("categoryservice")
+@FeignClient(value = "categoryservice")
 public interface ICategoryFeignClient {
 
     @PostMapping(value = "/api/categories/lookup", consumes = "application/json")
     public List<CategoryResponseDto> getCategoriesByNames(@RequestBody CategoryLookupRequestDto categoryLookupRequestDto);
+
 }
