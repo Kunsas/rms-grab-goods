@@ -53,6 +53,16 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).body(reviewResponseDto);
     }
 
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<ResponseDto> deleteReviewsByProductId(@Pattern(regexp = ProductConstants.PRODUCT_ID_REGEX, message = ProductConstants.INVALID_PRODUCT_ID_MESSAGE) @PathVariable String id){
+        boolean isDeleted = reviewService.deleteReviewsByProductId(id);
+        if(isDeleted){
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(ReviewConstants.STATUS_200, ReviewConstants.MESSAGE_200));
+        } else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto(ReviewConstants.STATUS_500, ReviewConstants.MESSAGE_500));
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ReviewResponseDto> updateReview(@Pattern(regexp = ReviewConstants.REVIEW_ID_REGEX, message = ReviewConstants.INVALID_REVIEW_ID_MESSAGE) @PathVariable String id, @Valid @RequestBody ReviewRequestDto reviewRequestDto){
         ReviewResponseDto updatedReviewResponseDto = reviewService.updateReview(id, reviewRequestDto);

@@ -9,7 +9,8 @@ public interface IReviewService {
     void createReview(ReviewRequestDto reviewRequestDto);
     ReviewResponseDto getReviewById(String id);
     List<ReviewResponseDto> getAllReviews();
-    List<ReviewResponseDto> getAllReviewsByProductId(String productId);
+    List<ReviewResponseDto> getAllReviewsByProductId(String id);
+    boolean deleteReviewsByProductId(String id);
     ReviewResponseDto updateReview(String id, ReviewRequestDto reviewRequestDto);
     String deleteReview(String id);
 }

@@ -10,6 +10,7 @@ import com.kunsas.grabgoods.productservice.exception.ProductNotFoundException;
 import com.kunsas.grabgoods.productservice.mapper.ProductMapper;
 import com.kunsas.grabgoods.productservice.repository.ProductRepository;
 import com.kunsas.grabgoods.productservice.service.client.ICategoryFeignClient;
+import com.kunsas.grabgoods.productservice.service.client.IInventoryFeignClient;
 import com.kunsas.grabgoods.productservice.service.client.IReviewFeignClient;
 import com.mongodb.client.result.UpdateResult;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,8 @@ public class ProductServiceImpl implements IProductService {
     private ICategoryFeignClient categoryFeignClient;
 
     private IReviewFeignClient reviewFeignClient;
+
+    private IInventoryFeignClient inventoryFeignClient;
 
     private MongoTemplate mongoTemplate;
 
@@ -98,6 +101,8 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public boolean deleteProduct(String id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(ProductConstants.PRODUCT_NOT_FOUND_EXCEPTION_MESSAGE));
+        reviewFeignClient.deleteReviewsByProductId(product.getId());
+        inventoryFeignClient.deleteInventory(product.getId());
         productRepository.deleteById(product.getId());
         return true;
     }

@@ -17,6 +17,7 @@ public class ProductConstants {
     public static final String INVALID_PRODUCT_DESCRIPTION_MESSAGE = "Invalid Product description. Product description length must be between 1 and 200, characters allowed are - numbers. alphabets, space, special characters(,_-|).";
     public static final String INVALID_PRODUCT_ID_MESSAGE = "Please provide valid Product ID.";
     public static final String INVALID_PRODUCT_PRICE_MESSAGE = "Invalid Product price.Product Price must be greater than or equal to zero. Allowed up to 2 decimal places.";
+    public static final String PRODUCT_OUT_OF_STOCK = "Product out of Stock";
 
     public static final String PRODUCT_ID_REGEX = "^[a-fA-F0-9]{24}$";
     public static final String PRODUCT_NAME_REGEX = "[a-zA-Z0-9 _\\-,|]+{1,100}";

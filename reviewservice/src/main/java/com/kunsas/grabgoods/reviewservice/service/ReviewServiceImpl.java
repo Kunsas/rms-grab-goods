@@ -55,6 +55,15 @@ public class ReviewServiceImpl implements IReviewService{
     }
 
     @Override
+    public boolean deleteReviewsByProductId(String id) {
+        List<Review> reviewsWithProductId = reviewRepository.findByProductId(id).orElseThrow(() -> new ReviewNotFoundException(ReviewConstants.REVIEW_NOT_FOUND_EXCEPTION_MESSAGE));
+        if(!reviewsWithProductId.isEmpty()) {
+            return reviewRepository.deleteByProductId(id) > 0;
+        }
+        return false;
+    }
+
+    @Override
     public ReviewResponseDto updateReview(String id, ReviewRequestDto reviewRequestDto) {
         Review existingReview = reviewRepository.findById(id).orElseThrow(() -> new ReviewNotFoundException(ReviewConstants.REVIEW_NOT_FOUND_EXCEPTION_MESSAGE));
         Review reviewToUpdate = ReviewMapper.mapToReview(reviewRequestDto, existingReview);

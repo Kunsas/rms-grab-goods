@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS `users`(
     `address` text NOT NULL,
     `created_at` date NOT NULL,
     `created_by` varchar(255) NOT NULL,
-    `updated_at` date NOT NULL,
-    `updated_by` varchar(255) NOT NULL
+    `updated_at` DEFAULT NULL,
+    `updated_by` varchar(255) DEFAULT NULL
 );

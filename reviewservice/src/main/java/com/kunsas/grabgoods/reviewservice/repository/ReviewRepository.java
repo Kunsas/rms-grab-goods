@@ -10,5 +10,6 @@ import java.util.Optional;
 @Repository
 public interface ReviewRepository extends MongoRepository<Review, String> {
     Optional<List<Review>> findByProductId(String productId);
+    long deleteByProductId(String productId);
     Optional<Review> findByUserIdAndProductIdAndTitle(String userId, String productId, String title);
 }
