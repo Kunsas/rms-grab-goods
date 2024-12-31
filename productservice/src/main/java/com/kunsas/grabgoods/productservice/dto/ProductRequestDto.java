@@ -2,6 +2,8 @@ package com.kunsas.grabgoods.productservice.dto;
 
 import com.kunsas.grabgoods.productservice.constant.ProductConstants;
 import com.kunsas.grabgoods.productservice.constant.client.CategoryConstants;
+import com.kunsas.grabgoods.productservice.constant.client.ReviewConstants;
+import com.kunsas.grabgoods.productservice.dto.client.ReviewResponseDto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.util.List;
@@ -32,4 +34,7 @@ public class ProductRequestDto {
             @Size(min=1, max = 68, message = CategoryConstants.INVALID_CATEGORY_NAME_MESSAGE)
             @Pattern(regexp = CategoryConstants.CATEGORY_NAME_REGEX, message = CategoryConstants.INVALID_CATEGORY_NAME_MESSAGE)
                     String> categories;
+
+    @NotNull(message = "Review List" + ReviewConstants.NOT_NULL_MESSAGE)
+    private List<ReviewResponseDto> reviews;
 }

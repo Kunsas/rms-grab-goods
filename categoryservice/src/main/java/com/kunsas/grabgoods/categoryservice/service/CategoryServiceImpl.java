@@ -31,7 +31,7 @@ public class CategoryServiceImpl implements ICategoryService{
             throw new CategoryAlreadyExistsException(CategoryConstants.CATEGORY_ALREADY_EXISTS_EXCEPTION_MESSAGE);
         } else {
             Category newCategory = CategoryMapper.mapToNewCategory(categoryRequestDto);
-            categoryRepository.insert(newCategory);
+            categoryRepository.save(newCategory);
         }
     }
 

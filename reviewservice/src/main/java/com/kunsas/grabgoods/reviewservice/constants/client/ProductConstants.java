@@ -1,4 +1,4 @@
-package com.kunsas.grabgoods.productservice.constant;
+package com.kunsas.grabgoods.reviewservice.constants.client;
 
 public class ProductConstants {
 

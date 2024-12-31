@@ -2,7 +2,10 @@ package com.kunsas.grabgoods.productservice.dto;
 
 import com.kunsas.grabgoods.productservice.constant.ProductConstants;
 import com.kunsas.grabgoods.productservice.constant.client.CategoryConstants;
+import com.kunsas.grabgoods.productservice.constant.client.ReviewConstants;
+import com.kunsas.grabgoods.productservice.dto.client.ReviewResponseDto;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -30,7 +33,7 @@ public class ProductResponseDto {
 
     @NotEmpty(message = "Product Price" + ProductConstants.NOT_EMPTY_MESSAGE)
     @Pattern(regexp = ProductConstants.PRODUCT_PRICE_REGEX, message = ProductConstants.INVALID_PRODUCT_PRICE_MESSAGE)
-    private Double price;
+    private String price;
 
     @NotEmpty(message = "Category Name List" + CategoryConstants.NOT_EMPTY_MESSAGE)
     private List<
@@ -39,6 +42,7 @@ public class ProductResponseDto {
             @Pattern(regexp = CategoryConstants.CATEGORY_NAME_REGEX, message = CategoryConstants.INVALID_CATEGORY_NAME_MESSAGE)
                     String> categories;
 
-//  private List<Review> reviews;
+    @NotNull(message = "Review List" + ReviewConstants.NOT_NULL_MESSAGE)
+    private List<ReviewResponseDto> reviews;
 
 }

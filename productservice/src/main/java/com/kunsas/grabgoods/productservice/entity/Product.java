@@ -1,6 +1,7 @@
 package com.kunsas.grabgoods.productservice.entity;
 
 import com.kunsas.grabgoods.productservice.dto.client.CategoryResponseDto;
+import com.kunsas.grabgoods.productservice.dto.client.ReviewResponseDto;
 import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -22,6 +23,6 @@ public class Product extends BaseEntity {
     private String imageUrl;
     private Double price;
     private List<CategoryResponseDto> categories;
-    private List<String> reviewIds;
+    private List<ReviewResponseDto> reviews;
 
 }
