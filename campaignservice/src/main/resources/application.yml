@@ -1,0 +1,24 @@
+server:
+  port:
+    8090
+
+spring:
+  application:
+    name: "campaignservice"
+  data:
+    mongodb:
+      uri: "mongodb://admin:mongodb@localhost:27021/campaigns"
+      database: "campaigns"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

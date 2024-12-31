@@ -1,0 +1,28 @@
+server:
+  port:
+    8087
+spring:
+  application:
+    name: "orderservice"
+  datasource:
+    url: jdbc:mysql://localhost:3307/orders
+    username: root
+    password: mysql
+  jpa:
+    show-sql: true
+  sql:
+    init:
+      mode: always
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

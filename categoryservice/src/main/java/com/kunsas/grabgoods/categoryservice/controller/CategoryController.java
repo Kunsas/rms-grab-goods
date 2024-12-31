@@ -1,10 +1,7 @@
 package com.kunsas.grabgoods.categoryservice.controller;
 
 import com.kunsas.grabgoods.categoryservice.constant.CategoryConstants;
-import com.kunsas.grabgoods.categoryservice.dto.CategoryConfigInfoDto;
-import com.kunsas.grabgoods.categoryservice.dto.CategoryRequestDto;
-import com.kunsas.grabgoods.categoryservice.dto.CategoryResponseDto;
-import com.kunsas.grabgoods.categoryservice.dto.ResponseDto;
+import com.kunsas.grabgoods.categoryservice.dto.*;
 import com.kunsas.grabgoods.categoryservice.mapper.CategoryMapper;
 import com.kunsas.grabgoods.categoryservice.service.ICategoryService;
 import jakarta.validation.Valid;
@@ -40,6 +37,12 @@ public class CategoryController {
         CategoryResponseDto categoryResponseDto = categoryService.getCategoryById(id);
         return ResponseEntity.status(HttpStatus.OK).body(categoryResponseDto);
     }
+
+    @PostMapping("/lookup")
+    public ResponseEntity<List<CategoryResponseDto>> getCategoriesByNames(@Valid @RequestBody CategoryLookupRequestDto categoryLookupRequestDto){
+        List<CategoryResponseDto> categoryResponseDtoList = categoryService.getCategoriesByName(categoryLookupRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(categoryResponseDtoList);
+    }
     
     @GetMapping
     public ResponseEntity<List<CategoryResponseDto>> getAllCategories(){
@@ -48,18 +51,14 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDto> updateCategory(@Pattern(regexp = CategoryConstants.CATEGORY_ID_REGEX, message = CategoryConstants.INVALID_CATEGORY_ID_MESSAGE) @PathVariable String id, @Valid @RequestBody CategoryRequestDto categoryRequestDto){
-        boolean isUpdated = categoryService.updateCategory(id, categoryRequestDto);
-        if(isUpdated){
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(CategoryConstants.STATUS_200, CategoryConstants.MESSAGE_200));
-        } else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto(CategoryConstants.STATUS_500, CategoryConstants.MESSAGE_500));
-        }
+    public ResponseEntity<CategoryResponseDto> updateCategory(@Pattern(regexp = CategoryConstants.CATEGORY_ID_REGEX, message = CategoryConstants.INVALID_CATEGORY_ID_MESSAGE) @PathVariable String id, @Valid @RequestBody CategoryRequestDto categoryRequestDto){
+        CategoryResponseDto updatedCategoryResponseDto = categoryService.updateCategory(id, categoryRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedCategoryResponseDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDto> deleteCategory(@Pattern(regexp = CategoryConstants.CATEGORY_ID_REGEX, message = CategoryConstants.INVALID_CATEGORY_ID_MESSAGE) @PathVariable String id){
-        boolean isDeleted = categoryService.deleteCategory(id);
+        boolean isDeleted = id.equals(categoryService.deleteCategory(id));
         if(isDeleted){
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(CategoryConstants.STATUS_200, CategoryConstants.MESSAGE_200));
         } else{

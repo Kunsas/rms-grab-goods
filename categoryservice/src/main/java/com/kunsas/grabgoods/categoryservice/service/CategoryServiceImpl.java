@@ -1,6 +1,7 @@
 package com.kunsas.grabgoods.categoryservice.service;
 
 import com.kunsas.grabgoods.categoryservice.constant.CategoryConstants;
+import com.kunsas.grabgoods.categoryservice.dto.CategoryLookupRequestDto;
 import com.kunsas.grabgoods.categoryservice.dto.CategoryRequestDto;
 import com.kunsas.grabgoods.categoryservice.dto.CategoryResponseDto;
 import com.kunsas.grabgoods.categoryservice.entity.Category;
@@ -8,6 +9,7 @@ import com.kunsas.grabgoods.categoryservice.exception.CategoryAlreadyExistsExcep
 import com.kunsas.grabgoods.categoryservice.exception.CategoryNotFoundException;
 import com.kunsas.grabgoods.categoryservice.mapper.CategoryMapper;
 import com.kunsas.grabgoods.categoryservice.repository.CategoryRepository;
+import com.kunsas.grabgoods.categoryservice.service.client.IProductFeignClient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ public class CategoryServiceImpl implements ICategoryService{
 
     private CategoryRepository categoryRepository;
 
+    private IProductFeignClient productFeignClient;
+
     @Override
     public void createCategory(CategoryRequestDto categoryRequestDto) {
         Optional<Category> existingCategory = categoryRepository.findByName(categoryRequestDto.getName());
@@ -27,7 +31,7 @@ public class CategoryServiceImpl implements ICategoryService{
             throw new CategoryAlreadyExistsException(CategoryConstants.CATEGORY_ALREADY_EXISTS_EXCEPTION_MESSAGE);
         } else {
             Category newCategory = CategoryMapper.mapToNewCategory(categoryRequestDto);
-            categoryRepository.insert(newCategory);
+            categoryRepository.save(newCategory);
         }
     }
 
@@ -38,22 +42,30 @@ public class CategoryServiceImpl implements ICategoryService{
     }
 
     @Override
+    public List<CategoryResponseDto> getCategoriesByName(CategoryLookupRequestDto categoryLookupRequestDto) {
+        List<Category> categories = categoryRepository.findByNameIn(categoryLookupRequestDto.getNames()).orElseThrow(() -> new CategoryNotFoundException(CategoryConstants.CATEGORY_NOT_FOUND_EXCEPTION_MESSAGE));
+        return categories.stream().map(CategoryMapper::mapToCategoryResponseDto).toList();
+    }
+
+    @Override
     public List<CategoryResponseDto> getAllCategories() {
         return categoryRepository.findAll().stream().map(CategoryMapper::mapToCategoryResponseDto).toList();
     }
 
     @Override
-    public boolean updateCategory(String id, CategoryRequestDto categoryRequestDto) {
+    public CategoryResponseDto updateCategory(String id, CategoryRequestDto categoryRequestDto) {
         Category existingCategory = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(CategoryConstants.CATEGORY_NOT_FOUND_EXCEPTION_MESSAGE));
-        Category updatedCategory = CategoryMapper.mapToCategory(categoryRequestDto, existingCategory);
-        categoryRepository.save(updatedCategory);
-        return true;
+        Category categoryToUpdate = CategoryMapper.mapToCategory(categoryRequestDto, existingCategory);
+        Category updatedCategory = categoryRepository.save(categoryToUpdate);
+        productFeignClient.updateCategoryInProduct(id, categoryRequestDto);
+        return CategoryMapper.mapToCategoryResponseDto(updatedCategory);
     }
 
     @Override
-    public boolean deleteCategory(String id) {
+    public String deleteCategory(String id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(CategoryConstants.CATEGORY_NOT_FOUND_EXCEPTION_MESSAGE));
         categoryRepository.deleteById(category.getId());
-        return true;
+        productFeignClient.deleteCategoryInProduct(id);
+        return category.getId();
     }
 }

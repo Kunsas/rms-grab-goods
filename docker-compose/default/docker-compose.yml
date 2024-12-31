@@ -1,0 +1,193 @@
+networks:
+  grabgoods:
+    driver: "bridge"
+
+services:
+  rabbit:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  configserver:
+    image: "devkunsas/configserver:v1"
+    container_name: configserver-ms
+    ports:
+      - "8071:8071"
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
+
+  userservice:
+    image: "devkunsas/userservice:v1"
+    container_name: userservice-ms
+    ports:
+      - "8080:8080"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "userservice"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  categoryservice:
+    image: "devkunsas/categoryservice:v1"
+    container_name: categoryservice-ms
+    ports:
+      - "8081:8081"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "categoryservice"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  productservice:
+    image: "devkunsas/productservice:v1"
+    container_name: productservice-ms
+    ports:
+      - "8082:8082"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "productservice"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  inventoryservice:
+    image: "devkunsas/inventoryservice:v1"
+    container_name: inventoryservice-ms
+    ports:
+      - "8083:8083"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "inventoryservice"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  reviewservice:
+    image: "devkunsas/reviewservice:v1"
+    container_name: reviewservice-ms
+    ports:
+      - "8084:8084"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "reviewservice"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  cartservice:
+    image: "devkunsas/cartservice:v1"
+    container_name: cartservice-ms
+    ports:
+      - "8085:8085"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "cartservice"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  wishlistservice:
+    image: "devkunsas/wishlistservice:v1"
+    container_name: wishlistservice-ms
+    ports:
+      - "8086:8086"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "wishlistservice"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  orderservice:
+    image: "devkunsas/orderservice:v1"
+    container_name: orderservice-ms
+    ports:
+      - "8087:8087"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "orderservice"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  paymentservice:
+    image: "devkunsas/paymentservice:v1"
+    container_name: paymentservice-ms
+    ports:
+      - "8088:8088"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "paymentservice"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  supportservice:
+    image: "devkunsas/supportservice:v1"
+    container_name: supportservice-ms
+    ports:
+      - "8089:8089"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "supportservice"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  campaignservice:
+    image: "devkunsas/campaignservice:v1"
+    container_name: campaignservice-ms
+    ports:
+      - "8090:8090"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "campaignservice"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
